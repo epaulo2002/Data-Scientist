@@ -1,3 +1,4 @@
+pollutantmean <- 
 function(directory, pollutant, id = 1:332) {
     ## 'directory' is a character vector of length 1 indicating
     ## the location of the CSV files
@@ -13,9 +14,16 @@ function(directory, pollutant, id = 1:332) {
     ## in the 'id' vector (ignoring NA values)
     ## NOTE: Do not round the result!
     
-    dataSet <- read.csv(paste0(directory, "/00", id, ".csv"))
+    fileNames <- list.files(directory, full.names=TRUE) #Create a list with all files from the provided folder
     
-    dataSet
+    pollutantDataSet <- data.frame() #Creates an empty data frame
+    
+    for (i in id){
+        #Loop rbinding the files together according the ids provided
+        pollutantDataSet <- rbind(pollutantDataSet, read.csv(fileNames[i]))
+    }
+    
+    #Calculate the mean of all selected files
+    mean(pollutantDataSet[, pollutant], na.rm = TRUE)
     
 }
-
